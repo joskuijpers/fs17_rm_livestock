@@ -1,4 +1,4 @@
-# FS17 Animals
+# FS17 Livestock
 
 ## Contributing
 You are free to contribute any code. But by doing this you transfer your copyright to the Realismus

@@ -7,7 +7,7 @@
 -- Copyright (c) Realismus Modding, 2017
 ----------------------------------------------------------------------------------------------------
 
-local ssAnimalsMod = {}
+local ssLivestockMod = {}
 
 ------------------------------------------
 -- quickly needed utility functions
@@ -16,7 +16,7 @@ local ssAnimalsMod = {}
 function log(...)
     if not g_seasons.verbose then return end
 
-    local str = "[Animals]"
+    local str = "[Livestock]"
     for i = 1, select("#", ...) do
         str = str .. " " .. tostring(select(i, ...))
     end
@@ -24,7 +24,7 @@ function log(...)
 end
 
 function logInfo(...)
-    local str = "[Animals]"
+    local str = "[Livestock]"
     for i = 1, select("#", ...) do
         str = str .. " " .. tostring(select(i, ...))
     end
@@ -99,7 +99,7 @@ end
 
 local function noopFunction() end
 
-function ssAnimalsMod.loadMapFinished(...)
+function ssLivestockMod.loadMapFinished(...)
     local requiredMethods = { "deleteMap", "mouseEvent", "keyEvent", "draw", "update" }
 
     -- Before loading the savegame, allow classes to set their default values
@@ -117,13 +117,13 @@ function ssAnimalsMod.loadMapFinished(...)
         end
     end
 
-    ssAnimalsMod:loadFromXML()
+    ssLivestockMod:loadFromXML()
 
     -- Enable the mod
     g_seasons.enabled = true
 end
 
-function ssAnimalsMod.loadFromXML(...)
+function ssLivestockMod.loadFromXML(...)
     if g_currentMission == nil or not g_currentMission:getIsServer() then return end
 
     local xmlFile = nil
@@ -135,7 +135,7 @@ function ssAnimalsMod.loadFromXML(...)
 
     for _, k in pairs(g_modClasses) do
         if _G[k] ~= nil and _G[k].loadMap ~= nil and _G[k].load ~= nil then
-            _G[k].load(_G[k], xmlFile, "careerSavegame.rmAnimals")
+            _G[k].load(_G[k], xmlFile, "careerSavegame.rmLivestock")
         end
     end
 
@@ -144,10 +144,10 @@ function ssAnimalsMod.loadFromXML(...)
     end
 end
 
-function ssAnimalsMod.saveToXML(self)
+function ssLivestockMod.saveToXML(self)
     if g_seasons.enabled and self.isValid and self.xmlKey ~= nil then
         if self.xmlFile ~= nil then
-            local ssKey = self.xmlKey .. ".rmAnimals"
+            local ssKey = self.xmlKey .. ".rmLivestock"
             removeXMLProperty(self.xmlFile, ssKey)
 
             for _, k in pairs(g_modClasses) do
@@ -156,13 +156,13 @@ function ssAnimalsMod.saveToXML(self)
                 end
             end
         else
-            g_currentMission.inGameMessage:showMessage("Animals", ssLang.getText("SS_SAVE_FAILED"), 10000)
+            g_currentMission.inGameMessage:showMessage("Livestock", ssLang.getText("SS_SAVE_FAILED"), 10000)
         end
     end
 end
 
 -- Add a new mod event: loadMapFinished.
-function ssAnimalsMod.nullFinished(...)
+function ssLivestockMod.nullFinished(...)
     local isServer = g_currentMission:getIsServer()
 
     for _, k in pairs(g_modClasses) do
@@ -180,9 +180,9 @@ function ssAnimalsMod.nullFinished(...)
     end
 end
 
-FSBaseMission.loadMapFinished = Utils.prependedFunction(FSBaseMission.loadMapFinished, ssAnimalsMod.loadMapFinished)
-FSCareerMissionInfo.saveToXML = Utils.appendedFunction(FSCareerMissionInfo.saveToXML, ssAnimalsMod.saveToXML)
-Mission00.loadMission00Finished = Utils.prependedFunction(Mission00.loadMission00Finished, ssAnimalsMod.nullFinished)
+FSBaseMission.loadMapFinished = Utils.prependedFunction(FSBaseMission.loadMapFinished, ssLivestockMod.loadMapFinished)
+FSCareerMissionInfo.saveToXML = Utils.appendedFunction(FSCareerMissionInfo.saveToXML, ssLivestockMod.saveToXML)
+Mission00.loadMission00Finished = Utils.prependedFunction(Mission00.loadMission00Finished, ssLivestockMod.nullFinished)
 
 ------------------------------------------
 -- Fixes for Giants Vanilla game
