@@ -1,0 +1,16 @@
+# System stuff
+__pycache__
+.DS_STORE
+
+# Editors
+*.sublime-workspace
+*.sublime-project
+
+# Build system
+dist/
+.buildrc
+FS17*.zip
+node_modules/
+.cookies
+
+package-lock.json
